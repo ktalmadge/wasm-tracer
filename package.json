@@ -1,0 +1,20 @@
+{
+  "config": {
+    "cargo": "cargo +nightly build --lib --manifest-path ./src/ray_tracer/Cargo.toml --target wasm32-unknown-unknown",
+    "wasm_debug_path": "./build/ray-tracer/wasm32-unknown-unknown/debug/raytracer.wasm",
+    "wasm_release_path": "./build/ray-tracer/wasm32-unknown-unknown/release/raytracer.wasm",
+    "wasm-bindgen": "wasm-bindgen  --out-dir ./build/ray-tracer/wasm"
+  },
+  "scripts": {
+    "serve": "webpack-dev-server",
+    "build-debug": "$npm_package_config_cargo && wasm-bindgen $npm_package_config_wasm_debug_path --out-dir ./build/ray-tracer/wasm",
+    "build-release": "$npm_package_config_cargo --release && wasm-bindgen $npm_package_config_wasm_release_path --out-dir ./build/ray-tracer/wasm",
+    "bundle": "npm run build-release && webpack"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.5.2",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
