@@ -1,16 +1,85 @@
-import { memory } from "../../build/ray-tracer/wasm/raytracer_bg.wasm";
-const raytracer = import("../../build/ray-tracer/wasm/raytracer");
-import { RayTracer, Pixel } from "../../build/ray-tracer/wasm/raytracer";
+import { memory } from "../../../build/ray-tracer/wasm/raytracer_bg.wasm";
+import { RayTracer } from "../../../build/ray-tracer/wasm/raytracer";
 
-raytracer.then(raytracer => {
-  let configuration = `{
-      "threads": 4,
+const raytracer_wasm = import("../../../build/ray-tracer/wasm/raytracer");
+
+class RayTracerComponent {
+  constructor(canvas) {
+    this.raytracer = raytracer_wasm.then(raytracer => {
+      return RayTracer.new(this.configuration());
+    });
+    this.x = 0;
+    this.y = 0;
+    this.totalDrawn = 0;
+    this.should_trace = false;
+    this.canvas = canvas;
+    this.canvas.width = 100;
+    this.canvas.height = 100;
+  }
+
+  componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  };
+
+  rgbToHex(r, g, b) {
+    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  };
+
+  next_pixel() {
+    (this.y++) % this.canvas.height;
+    if(this.y >= this.canvas.width) {
+      this.y = 0;
+      this.x++;
+    }
+
+    this.totalDrawn++;
+
+    return this.x < this.canvas.width;
+  }
+
+  progress_percentage(){
+    return (((this.totalDrawn + 1)/ (this.canvas.width * this.canvas.height)) * 100).toFixed(1);
+  }
+
+  draw_with_wait(raytracer) {
+    return (async () => {
+      const progress = document.getElementById('progress');
+      console.log("PROGRESS: " + progress);
+      const ctx = this.canvas.getContext('2d');
+      do {
+        progress.innerText = this.progress_percentage() + "%";
+        let pixel = raytracer.trace_pixel(this.x, this.y);
+        ctx.fillStyle = this.rgbToHex(pixel.r(), pixel.g(), pixel.b());
+        ctx.fillRect(
+            this.x, this.y, 1, 1
+        );
+
+        if(this.y % 100 === 0) {
+          var wait = ms => new Promise((r, j) => setTimeout(r, ms));
+          await wait(1);
+        }
+      } while (this.next_pixel() && this.should_trace);
+    });
+  }
+
+  draw(){
+    let f = this.raytracer.then(raytracer => {
+      return this.draw_with_wait(raytracer);
+    });
+
+    f.then(asd => {asd()});
+  }
+
+  configuration() {
+    return `{
+      "threads": 1,
       "samples": 1,
       "use_kd_tree": true,
       "max_kd_tree_depth": 20,
-      "width": 300,
-      "height": 300,
-      "camera_position": [3, 0, 20.0],
+      "width": 100,
+      "height": 100,
+      "camera_position": [0.5, 10, 25.0],
       "camera_target": [0.0, -3.0, 0.0],
       "camera_up": [0.0, 1.0, 0.0],
       "viewport_distance": 1.0,
@@ -29,7 +98,7 @@ raytracer.then(raytracer => {
         ],
       "objects": [
           {
-            "color": [0, 150, 200],
+            "color": [150, 150, 150],
             "reflectance": 0.5,
             "ambient_coefficient": 0.2,
             "specular_coefficient": 0.4,
@@ -68,7 +137,7 @@ raytracer.then(raytracer => {
               ]
           },
           {
-              "color": [50, 50, 255],
+              "color": [255, 255, 255],
               "reflectance": 0.2,
               "ambient_coefficient": 0.2,
               "specular_coefficient": 0.4,
@@ -84,7 +153,7 @@ raytracer.then(raytracer => {
               ]
           },
           {
-              "color": [255, 50, 255],
+              "color": [50, 50, 50],
               "reflectance": 0.2,
               "ambient_coefficient": 0.2,
               "specular_coefficient": 0.4,
@@ -142,75 +211,7 @@ raytracer.then(raytracer => {
     "reinhard_delta": 0.01
   }
 `;
-
-  let componentToHex = function(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  };
-
-  let rgbToHex = function(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-  };
-
-  console.log(configuration);
-
-  let ray_tracer = RayTracer.new(configuration);
-
-  //let pixel = Pixel.new(50, 50, 50);
-  let pixel = ray_tracer.trace_pixel(100, 100);
-  console.log(raytracer);
-  console.log("TRACING: " + pixel.r() + ", " + pixel.g() + ", " + pixel.b());
-
-  const canvas = document.getElementById('trace-target');
-  canvas.width = 300;
-  canvas.height = 300;
-
-  const ctx = canvas.getContext('2d');
-
-
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
   }
+}
 
-  let x = 0;
-  let y = 0;
-  let increment_pixel = () => {
-    (y++) % 300;
-    if(y >= 300) {
-      y = 0;
-      x++;
-    }
-
-    return x < 300
-  };
-
-  let should_trace = false;
-
-  const trace = async () => {
-    do {
-      let pixel = ray_tracer.trace_pixel(x, y);
-
-      ctx.beginPath();
-      ctx.fillStyle = rgbToHex(pixel.r(), pixel.g(), pixel.b());
-      ctx.fillRect(
-          x, y, 1, 1
-      );
-      ctx.stroke();
-
-      if (y % 100 == 0) {
-        await sleep(200);
-      }
-    } while(increment_pixel() && should_trace);
-  };
-
-  document.getElementById('toggle').onclick = (event) => {
-    should_trace = !should_trace;
-
-    if(should_trace) {
-      event.target.textContent = "Stop Tracing";
-      trace();
-    } else {
-      event.target.textContent = "Start Tracing";
-    }
-  }
-});
+export default RayTracerComponent;
