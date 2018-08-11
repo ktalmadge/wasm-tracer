@@ -5,16 +5,17 @@ const raytracer_wasm = import("../../../build/ray-tracer/wasm/raytracer");
 
 class RayTracerComponent {
   constructor(canvas) {
-    this.raytracer = raytracer_wasm.then(raytracer => {
-      return RayTracer.new(this.configuration());
+    raytracer_wasm.then(raytracer => {
+      //return RayTracer.new(this.configuration());
+      this.raytracer = RayTracer.new(this.configuration());
     });
     this.x = 0;
     this.y = 0;
     this.totalDrawn = 0;
     this.should_trace = false;
     this.canvas = canvas;
-    this.canvas.width = 100;
-    this.canvas.height = 100;
+    this.canvas.width = 200;
+    this.canvas.height = 200;
   }
 
   componentToHex(c) {
@@ -42,33 +43,22 @@ class RayTracerComponent {
     return (((this.totalDrawn + 1)/ (this.canvas.width * this.canvas.height)) * 100).toFixed(1);
   }
 
-  draw_with_wait(raytracer) {
-    return (async () => {
-      const progress = document.getElementById('progress');
-      console.log("PROGRESS: " + progress);
-      const ctx = this.canvas.getContext('2d');
-      do {
-        progress.innerText = this.progress_percentage() + "%";
-        let pixel = raytracer.trace_pixel(this.x, this.y);
-        ctx.fillStyle = this.rgbToHex(pixel.r(), pixel.g(), pixel.b());
-        ctx.fillRect(
-            this.x, this.y, 1, 1
-        );
+  async draw() {
+    const progress = document.getElementById('progress');
+    console.log("PROGRESS: " + progress);
+    const ctx = this.canvas.getContext('2d');
+    do {
+      progress.innerText = this.progress_percentage() + "%";
+      let pixel = this.raytracer.trace_pixel(this.x, this.y);
+      ctx.fillStyle = this.rgbToHex(pixel.r(), pixel.g(), pixel.b());
+      ctx.fillRect(
+          this.x, this.y, 1, 1
+      );
 
-        if(this.y % 100 === 0) {
-          var wait = ms => new Promise((r, j) => setTimeout(r, ms));
-          await wait(1);
-        }
-      } while (this.next_pixel() && this.should_trace);
-    });
-  }
-
-  draw(){
-    let f = this.raytracer.then(raytracer => {
-      return this.draw_with_wait(raytracer);
-    });
-
-    f.then(asd => {asd()});
+      if(this.y % this.canvas.height === 0) {
+        await new Promise(resolve => setTimeout(resolve, 1));
+      }
+    } while (this.next_pixel() && this.should_trace);
   }
 
   configuration() {
@@ -77,8 +67,8 @@ class RayTracerComponent {
       "samples": 1,
       "use_kd_tree": true,
       "max_kd_tree_depth": 20,
-      "width": 100,
-      "height": 100,
+      "width": 500,
+      "height": 500,
       "camera_position": [0.5, 10, 25.0],
       "camera_target": [0.0, -3.0, 0.0],
       "camera_up": [0.0, 1.0, 0.0],
@@ -98,7 +88,7 @@ class RayTracerComponent {
         ],
       "objects": [
           {
-            "color": [150, 150, 150],
+            "color": [50, 50, 50],
             "reflectance": 0.5,
             "ambient_coefficient": 0.2,
             "specular_coefficient": 0.4,

@@ -1,3 +1,6 @@
+!.keep
+
 build/*
 .idea/
 node_modules/
+dist/

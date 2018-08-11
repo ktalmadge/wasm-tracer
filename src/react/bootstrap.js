@@ -1,3 +1,9 @@
+import "@babel/polyfill";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import AppContainer from './containers/AppContainer';
+ReactDOM.render(<AppContainer/>, document.getElementById('app'));
+
 // Currently WebAssembly modules cannot be synchronously imported in the main
 // chunk: https://github.com/webpack/webpack/issues/6615
 //
