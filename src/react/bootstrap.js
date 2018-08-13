@@ -2,24 +2,79 @@ import "@babel/polyfill";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppContainer from './containers/AppContainer';
+import ConfigurationActions from './data/configuration/ConfigurationActions';
+
 ReactDOM.render(<AppContainer/>, document.getElementById('app'));
 
-// Currently WebAssembly modules cannot be synchronously imported in the main
-// chunk: https://github.com/webpack/webpack/issues/6615
-//
-// By dynamically importing, webpack will split it into a separate chunk
-// automatically, where synchronous imports of WebAssembly is allowed.
-let tracer_import = import('./ray_tracer/ray_tracer_component');
-tracer_import.then(tracer_class => {
-  let ray_tracer = new tracer_class.default(document.getElementById('trace-target'));
-  document.getElementById('toggle').onclick = (event) => {
-    ray_tracer.should_trace = !ray_tracer.should_trace;
 
-    if(ray_tracer.should_trace) {
-      event.target.textContent = "Stop Tracing";
-      ray_tracer.draw();
-    } else {
-      event.target.textContent = "Start Tracing";
-    }
-  };
-});
+ConfigurationActions.addLight();
+ConfigurationActions.addObject();
+
+ConfigurationActions.updateValue(
+    'ambient_coefficient',
+    0.2,
+    'float',
+    'objects',
+    'id_2'
+);
+
+ConfigurationActions.updateValue(
+    'specular_coefficient',
+    0.4,
+    'float',
+    'objects',
+    'id_2'
+);
+
+ConfigurationActions.updateValue(
+    'specular_exponent',
+    20,
+    'integer',
+    'objects',
+    'id_2'
+);
+
+ConfigurationActions.updateValue(
+    'reflectance',
+    0.25,
+    'float',
+    'objects',
+    'id_2'
+);
+
+ConfigurationActions.updateValue(
+    'contents',
+    `sphere 9.0 2 1 0.75
+                  sphere 9.0 0 -2 0.75
+                  sphere 9.0 -2 -5 0.75
+                  sphere 7.0 2 -5 0.75
+                  sphere 7.0 0 -2 0.75
+                  sphere 7.0 -2 1 0.75
+                  sphere 5.0 2 1 0.75
+                  sphere 5.0 0 -2 0.75
+                  sphere 5.0 -2 -5 0.75
+                  sphere 3.0 2 -5 0.75
+                  sphere 3.0 0 -2 0.75
+                  sphere 3.0 -2 1 0.75
+                  sphere 1.0 2 1 0.75
+                  sphere 1.0 0 -2 0.75
+                  sphere 1.0 -2 -5 0.75
+                  sphere -1.0 2 -5 0.75
+                  sphere -1.0 0 -2 0.75
+                  sphere -1.0 -2 1 0.75
+                  sphere -3.0 2 1 0.75
+                  sphere -3.0 0 -2 0.75
+                  sphere -3.0 -2 -5 0.75
+                  sphere -5.0 2 -5 0.75
+                  sphere -5.0 0 -2 0.75
+                  sphere -5.0 -2 1 0.75
+                  sphere -7.0 2 1 0.75
+                  sphere -7.0 0 -2 0.75
+                  sphere -7.0 -2 -5 0.75
+                  sphere -9.0 2 -5 0.75
+                  sphere -9.0 0 -2 0.75
+                  sphere -9.0 -2 1 0.75`,
+    'textarea',
+    'objects',
+    'id_2'
+);

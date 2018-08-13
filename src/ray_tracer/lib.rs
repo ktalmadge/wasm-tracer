@@ -37,6 +37,7 @@ use std::panic;
 
 use image::{ImageBuffer, Rgba};
 
+/*
 #[wasm_bindgen]
 extern {
     #[wasm_bindgen(js_namespace = console)]
@@ -52,6 +53,7 @@ fn console_log(string: &str) {
 macro_rules! log {
     ($($t:tt)*) => (console_log(&format!($($t)*)))
 }
+*/
 
 #[wasm_bindgen]
 pub struct Pixel {
