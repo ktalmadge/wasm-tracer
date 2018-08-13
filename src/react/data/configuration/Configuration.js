@@ -19,7 +19,7 @@ const Configuration = Immutable.Record(
     lights: Immutable.OrderedMap(),
     objects: Immutable.OrderedMap(),
 
-    reinhard_keyvalue: 1.5,
+    reinhard_key_value: 1.5,
     reinhard_delta: 0.01
   }
 );

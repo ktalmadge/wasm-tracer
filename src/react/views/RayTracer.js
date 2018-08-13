@@ -35,7 +35,7 @@ class RayTracer extends React.Component {
         let element = json[collection][id];
         delete element.id;
 
-        if(collection === 'objects') {
+        if(collection === 'objects'){
           element.contents = element.contents.split("\n").map(line => line.trim());
         }
 
