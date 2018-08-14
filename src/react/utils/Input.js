@@ -1,4 +1,5 @@
 import React from 'react';
+import './StringExtensions';
 
 function Input(props){
   if(props.type === "textarea") {
@@ -37,20 +38,25 @@ function Input(props){
 }
 
 function LabelledInput(props){
+  let label =
+      (props.label === undefined) ? props.name.capitalize() : props.label;
   return (
-      <div className="labelled_input">
-        <label className="input_label">{props.name}:</label>
+      <div className={props.className + "-labelled-input labelled-input"}>
+        <label className={props.className + "-label input-label"}>{label}</label>
         <Input {...props} />
       </div>
   );
 }
 
 function LabelledCoordInput(props){
+  let label =
+      (props.label === undefined) ? props.name.capitalize() : props.label;
+  let input_class = "coord-input " + props.className;
   return (
-      <div className="labelled_input coord_input">
-        <label className="input_label">{props.name}:</label>
+      <div className={props.className + "-labelled-input labelled-input"}>
+        <label className={props.className + "-label input-label"}>{label}</label>
         <input
-            className={props.className}
+            className={input_class}
             name={props.name}
             data-value-type={props.type}
             data-index="0"
@@ -58,7 +64,7 @@ function LabelledCoordInput(props){
             onChange={props.handleChange}
         />
         <input
-            className={props.className}
+            className={input_class}
             name={props.name}
             data-value-type={props.type}
             data-index="1"
@@ -66,7 +72,7 @@ function LabelledCoordInput(props){
             onChange={props.handleChange}
         />
         <input
-            className={props.className}
+            className={input_class}
             name={props.name}
             data-value-type={props.type}
             data-index="2"

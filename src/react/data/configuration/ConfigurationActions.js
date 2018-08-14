@@ -2,6 +2,13 @@ import ConfigurationActionTypes from './ConfigurationActionTypes';
 import Dispatcher from '../Dispatcher';
 
 const ConfigurationActions = {
+  selectConfiguration(option) {
+    Dispatcher.dispatch({
+      type: ConfigurationActionTypes.SELECT_CONFIGURATION,
+      option: option
+    })
+  },
+
   addLight() {
     Dispatcher.dispatch({
       type: ConfigurationActionTypes.ADD_LIGHT

@@ -35,11 +35,12 @@ class ObjectConfiguration extends React.Component {
   }
 
   render() {
+    let selected = this.props.selected_configuration === 'object';
     return (
-        <div className="configuration object_configurations">
-          <button onClick={this.addObject}>Add Object</button>
+        <div className={"configuration object-configurations " + (selected ? "selected" : "")}>
+          <div className="configuration_title">Object Configuration</div>
           {[...this.props.objects.values()].reverse().map(object => (
-              <li key={object.id}>
+              <div className="object_configuration" key={object.id}>
                 <LabelledCoordInput
                     name="color"
                     value={object.color}
@@ -88,8 +89,9 @@ class ObjectConfiguration extends React.Component {
                     handleChange={(event) => { this.handleChange(object.id, event) }}
                     {...this.props}
                 />
-              </li>
+              </div>
           ))}
+          <button onClick={this.addObject}>Add Object</button>
         </div>
     )
   }

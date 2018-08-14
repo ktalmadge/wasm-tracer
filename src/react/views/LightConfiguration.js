@@ -35,11 +35,12 @@ class LightConfiguration extends React.Component {
   }
 
   render() {
+    let selected = this.props.selected_configuration === 'light';
     return (
-        <div className="configuration light_configurations">
-          <button onClick={this.addLight}>Add Light</button>
+        <div className={"configuration light-configurations " + (selected ? "selected" : "")}>
+          <div className="configuration_title">Light Configuration</div>
           {[...this.props.lights.values()].reverse().map(light => (
-              <li key={light.id}>
+              <div className="light_configuration" key={light.id}>
                 <LabelledCoordInput
                     name="position"
                     value={light.position}
@@ -64,8 +65,9 @@ class LightConfiguration extends React.Component {
                     handleChange={(event) => { this.handleChange(light.id, event) }}
                     {...this.props}
                 />
-              </li>
+              </div>
           ))}
+          <button onClick={this.addLight}>Add Light</button>
         </div>
     )
   }

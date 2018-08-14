@@ -1,9 +1,15 @@
 import React from 'react';
-import ConfigurationStore from "../data/configuration/ConfigurationStore";
 
 class RayTracer extends React.Component {
   constructor(props) {
     super(props);
+
+    let tracer_import = import('../ray_tracer/RayTracerComponent');
+    tracer_import.then(tracer_class => {
+      this.ray_tracer = new tracer_class.default(
+          document.getElementById('trace-target')
+      );
+    });
 
     this.saveConfiguration = this.saveConfiguration.bind(this);
   }
@@ -25,8 +31,11 @@ class RayTracer extends React.Component {
     }
   }
 
+  // Prepare configuration to pass to raytracer
   formattedConfiguration(){
     let json = JSON.parse(JSON.stringify(this.props.configuration));
+
+    delete json.react_state;
 
     // Remove React ID information from objects and lights
     ['lights', 'objects'].map(collection => {
@@ -48,33 +57,52 @@ class RayTracer extends React.Component {
     return this.parseNumbers(json);
   }
 
-  saveConfiguration(event) {
-    let tracer_import = import('../ray_tracer/RayTracerComponent');
-    tracer_import.then(tracer_class => {
-      let ray_tracer = new tracer_class.default(
-          this.formattedConfiguration(),
-          document.getElementById('trace-target')
-      );
-      document.getElementById('toggle').onclick = (event) => {
-        ray_tracer.should_trace = !ray_tracer.should_trace;
+  saveConfiguration(_event) {
+    // Todo: Properly display error with react state
+    let error_div = document.getElementById('configuration-error');
+    error_div.textContent = '';
 
-        if(ray_tracer.should_trace) {
-          event.target.textContent = "Stop Tracing";
-          ray_tracer.draw();
-        } else {
-          event.target.textContent = "Start Tracing";
-        }
-      };
-    });
+    this.ray_tracer.updateConfiguration(
+        this.formattedConfiguration(),
+        ((error) => {
+          error_div.textContent = "Invalid Configuration";
+        })
+    );
+
+    document.getElementById('canvas-target').style.minHeight = '100vh';
+    location.hash = "#" + 'canvas-target';
+
+    let toggle_button = document.getElementById('toggle');
+    toggle_button.textContent = "Start Tracing";
+
+    toggle_button.onclick = (event) => {
+      this.ray_tracer.should_trace = !this.ray_tracer.should_trace;
+
+      if(this.ray_tracer.should_trace) {
+        event.target.textContent = "Stop Tracing";
+        this.ray_tracer.draw();
+      } else {
+        event.target.textContent = "Start Tracing";
+      }
+    };
   }
 
   render() {
     return (
-        <div className="configuration camera_configuration">
-          <button id="save-configuration" onClick={this.saveConfiguration}>Save Configuration</button>
-          <canvas id="trace-target"></canvas>
-          <div id="progress"></div>
-          <button id="toggle">Start Tracing</button>
+        <div id="canvas-target" className="tracer-container">
+          <div id="configuration-error" className="configuration-error"></div>
+          <div className="tracer-controls-container">
+            <div className="tracer-controls-wrapper">
+              <button id="save-configuration" onClick={this.saveConfiguration}>Save Configuration</button>
+              <button id="toggle">Start Tracing</button>
+            </div>
+          </div>
+          <div className="canvas-container">
+            <div className="canvas-wrapper">
+              <canvas id="trace-target" height="100px" width="100px"></canvas>
+            </div>
+          </div>
+          <div id="progress" className="progress"></div>
         </div>
     )
   }

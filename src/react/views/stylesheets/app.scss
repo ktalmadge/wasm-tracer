@@ -1,0 +1,161 @@
+html {
+  font-family: sans-serif;
+}
+
+button {
+  background: #ddd;
+  border: 1px solid gray;
+  padding: 5px 10px;
+
+  &.nav-button {
+    border-bottom: 0;
+    flex-grow: 1;
+  }
+
+  &:hover {
+    background: #ccc;
+    cursor: pointer;
+  }
+
+  &:active {
+    background: #bbb;
+  }
+
+  &.selected {
+    background: white;
+  }
+
+  &:focus {
+    //background: #eee!important;
+    outline: none;
+  }
+}
+
+textarea {
+  &.textarea {
+    height: 15rem;
+    width: 300px;
+  }
+}
+
+.labelled-input {
+  height: 2em;
+  margin: 10px 0;
+
+  &.textarea-labelled-input {
+    height: auto;
+  }
+
+  label {
+    &.number-label,
+    &.coord-label,
+    &.textarea-label {
+      display: inline-block;
+      width: 200px;
+    }
+
+    &.textarea-label {
+      vertical-align: top;
+    }
+  }
+
+  input {
+    text-align: right;
+    padding: 0 5px;
+    border: 1px solid lightgray;
+    background: white;
+    border-radius: 5px;
+    height: 2em;
+    margin: 0;
+    vertical-align: middle;
+
+    &[type="checkbox"] {
+      height: auto;
+      cursor: pointer;
+    }
+
+    &:not(:focus) {
+      background: #fafafa;
+    }
+
+    &.number {
+      width: 50px;
+    }
+
+    &.coord-input {
+      margin-right: 10px;
+    }
+  }
+}
+
+.configuration {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid gray;
+
+  &:not(.selected) {
+    display: none;
+
+  }
+
+  .configuration_title {
+    font-weight: bold;
+    font-variant: small-caps;
+    margin-bottom: 10px;
+  }
+}
+
+canvas.ready {
+  padding: 4px 4px 0;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  min-width: 550px;
+  max-width: 100%;
+}
+
+.app-container {
+  flex-grow: 1;
+}
+
+.tracer-container {
+  padding: 10px 0;
+}
+
+.canvas-wrapper {
+  display: inline-block;
+  width: auto;
+  height: auto;
+}
+
+.tracer-controls-container,
+.canvas-container {
+  display: flex;
+  justify-content: center;
+}
+
+.progress {
+  text-align: center;
+}
+
+.navigation-container {
+  display: flex;
+  justify-content: center;
+}
+
+.configuration-error {
+  display: none;
+  width: auto;
+  padding: 10px 50px;
+  margin: 10px;
+  text-align: center;
+  background: #ff3333;
+  border: 1px solid #550000;
+  border-radius: 2px;
+
+  &:not(:empty) {
+    display: block;
+  }
+}

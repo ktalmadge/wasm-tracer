@@ -20,7 +20,11 @@ const Configuration = Immutable.Record(
     objects: Immutable.OrderedMap(),
 
     reinhard_key_value: 1.5,
-    reinhard_delta: 0.01
+    reinhard_delta: 0.01,
+
+    react_state: Immutable.OrderedMap({
+        selected_configuration: 'basic'
+    })
   }
 );
 

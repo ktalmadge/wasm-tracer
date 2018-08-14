@@ -18,11 +18,14 @@ class CameraConfiguration extends React.Component {
   }
 
   render() {
+    let selected = this.props.selected_configuration === 'camera';
     return (
-        <div className="configuration camera_configuration">
-          <LabelledCoordInput name="camera_position" value={this.props.configuration.get("camera_position")} type="float" className="coord" handleChange={this.handleCoordChange} {...this.props} />
-          <LabelledCoordInput name="camera_target" value={this.props.configuration.get("camera_target")} type="float" className="coord" handleChange={this.handleCoordChange} {...this.props} />
-          <LabelledCoordInput name="camera_up" value={this.props.configuration.get("camera_up")} type="float" className="coord" handleChange={this.handleCoordChange} {...this.props} />
+        <div className={"configuration camera-configurations " + (selected ? "selected" : "")}>
+          <div className="configuration_title">Camera Configuration</div>
+
+          <LabelledCoordInput name="camera_position" value={this.props.configuration.get("camera_position")} type="float" className="number" handleChange={this.handleCoordChange} {...this.props} />
+          <LabelledCoordInput name="camera_target" value={this.props.configuration.get("camera_target")} type="float" className="number" handleChange={this.handleCoordChange} {...this.props} />
+          <LabelledCoordInput name="camera_up" value={this.props.configuration.get("camera_up")} type="float" className="number" handleChange={this.handleCoordChange} {...this.props} />
           <LabelledInput name="viewport_width" value={this.props.configuration.get("viewport_width")} type="float" className="number" handleChange={this.handleChange} {...this.props} />
           <LabelledInput name="viewport_distance" value={this.props.configuration.get("viewport_distance")} type="float" className="number" handleChange={this.handleChange} {...this.props} />
         </div>

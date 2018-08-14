@@ -22,6 +22,9 @@ class ConfigurationStore extends ReduceStore {
 
   reduce(state, action){
     switch(action.type){
+      case ConfigurationActionTypes.SELECT_CONFIGURATION:
+        return state.setIn(['react_state', 'selected_configuration'], action.option);
+
       case ConfigurationActionTypes.ADD_LIGHT:
         let light_id = Id.next();
         return state.setIn(['lights', light_id], new Light({id: light_id}));
