@@ -12,17 +12,16 @@ body {
 }
 
 button {
-  border-radius: 3px;
-  background: #bdc7d0;
+  border-radius: 2px;
   font-weight: 500;
 
+  background: white;
   color: #575757;
-  border: 0;
+  border: 1px solid #575757;
   height: 30px;
-  margin: 0 2px;
+  margin: 0 3px;
 
   &.nav-button {
-    border-bottom: 0;
     flex-grow: 1;
   }
 
@@ -111,7 +110,6 @@ button {
 .configuration {
   padding: 10px;
   margin-bottom: 10px;
-  //border: 1px solid gray;
 
   &:not(.selected) {
     display: none;

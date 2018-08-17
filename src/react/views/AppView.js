@@ -17,7 +17,7 @@ function hideNotification(){
 
 function InfoNotification(props) {
   return (
-      <div className="info-notification" onClick={hideNotification}>
+      <div className="info-notification">
         {props.state.get("info")}
       </div>
   )
@@ -25,7 +25,7 @@ function InfoNotification(props) {
 
 function ErrorNotification(props) {
   return (
-      <div className="error-notification" onClick={hideNotification}>
+      <div className="error-notification">
         {props.state.get("error")}
       </div>
   )
@@ -34,7 +34,7 @@ function ErrorNotification(props) {
 function NotificationContainer(props) {
   if(props.state.get("info") || props.state.get("info")) {
     return (
-        <div className="notification-container">
+        <div className="notification-container" onClick={hideNotification}>
           <div className="notification">
             <InfoNotification {...props} />
             <ErrorNotification {...props} />
