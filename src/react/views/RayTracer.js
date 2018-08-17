@@ -1,4 +1,5 @@
 import React from 'react';
+import ConfigurationActions from '../data/configuration/ConfigurationActions';
 
 class RayTracer extends React.Component {
   constructor(props) {
@@ -35,8 +36,6 @@ class RayTracer extends React.Component {
   formattedConfiguration(){
     let json = JSON.parse(JSON.stringify(this.props.configuration));
 
-    delete json.react_state;
-
     // Remove React ID information from objects and lights
     ['lights', 'objects'].map(collection => {
       let formatted_collection = [];
@@ -44,6 +43,7 @@ class RayTracer extends React.Component {
         let element = json[collection][id];
         delete element.id;
 
+        // Split object contents into array of lines
         if(collection === 'objects'){
           element.contents = element.contents.split("\n").map(line => line.trim());
         }
@@ -58,19 +58,19 @@ class RayTracer extends React.Component {
   }
 
   saveConfiguration(_event) {
-    // Todo: Properly display error with react state
-    let error_div = document.getElementById('configuration-error');
-    error_div.textContent = '';
-
     this.ray_tracer.updateConfiguration(
         this.formattedConfiguration(),
+        () => {
+          ConfigurationActions.showInfo('Configuration saved');
+        },
         ((error) => {
-          error_div.textContent = "Invalid Configuration";
+          ConfigurationActions.showError("Error: " + error.message);
         })
     );
 
-    document.getElementById('canvas-target').style.minHeight = '100vh';
-    location.hash = "#" + 'canvas-target';
+    let target = document.getElementById('canvas-target');
+    target.style.minHeight = '100vh';
+    //target.scrollIntoView({block: 'start', behavior: 'smooth'});
 
     let toggle_button = document.getElementById('toggle');
     toggle_button.textContent = "Start Tracing";
@@ -90,7 +90,6 @@ class RayTracer extends React.Component {
   render() {
     return (
         <div id="canvas-target" className="tracer-container">
-          <div id="configuration-error" className="configuration-error"></div>
           <div className="tracer-controls-container">
             <div className="tracer-controls-wrapper">
               <button id="save-configuration" onClick={this.saveConfiguration}>Save Configuration</button>

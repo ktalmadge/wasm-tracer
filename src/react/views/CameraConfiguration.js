@@ -18,10 +18,10 @@ class CameraConfiguration extends React.Component {
   }
 
   render() {
-    let selected = this.props.selected_configuration === 'camera';
+    let selected = this.props.selected_tab === 'camera';
     return (
         <div className={"configuration camera-configurations " + (selected ? "selected" : "")}>
-          <div className="configuration_title">Camera Configuration</div>
+          <div className="configuration-title">Camera Configuration</div>
 
           <LabelledCoordInput name="camera_position" value={this.props.configuration.get("camera_position")} type="float" className="number" handleChange={this.handleCoordChange} {...this.props} />
           <LabelledCoordInput name="camera_target" value={this.props.configuration.get("camera_target")} type="float" className="number" handleChange={this.handleCoordChange} {...this.props} />

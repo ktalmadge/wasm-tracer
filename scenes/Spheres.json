@@ -1,0 +1,73 @@
+{
+  "threads": 1,
+  "samples": 1,
+  "use_kd_tree": true,
+  "max_kd_tree_depth": 20,
+  "width": 1200,
+  "height": 600,
+  "camera_position": [0, 0, 25.0],
+  "camera_target": [0.5, -0.5, 0.0],
+  "camera_up": [0.0, 1.0, 0.0],
+  "viewport_distance": 1.0,
+  "viewport_width": 1.0,
+  "max_reflections": 5,
+  "reinhard_key_value": 1.5,
+  "reinhard_delta": 0.01,
+  "lights": [
+    {
+      "position": [0, 0, 0],
+      "intensity": 1.0,
+      "color": [255, 255, 255]
+    }
+  ],
+  "objects": [
+    {
+      "color": [100, 50, 255],
+      "reflectance": 0.25,
+      "ambient_coefficient": 0.15,
+      "specular_coefficient": 0.4,
+      "specular_exponent": 20,
+      "contents": [
+        "sphere 9.0 2 1 0.75",
+        "sphere 9.0 0 -2 0.75",
+        "sphere 9.0 -2 -5 0.75",
+        "sphere 5.0 2 1 0.75",
+        "sphere 5.0 0 -2 0.75",
+        "sphere 5.0 -2 -5 0.75",
+        "sphere 1.0 2 1 0.75",
+        "sphere 1.0 0 -2 0.75",
+        "sphere 1.0 -2 -5 0.75",
+        "sphere -3.0 2 1 0.75",
+        "sphere -3.0 0 -2 0.75",
+        "sphere -3.0 -2 -5 0.75",
+        "sphere -7.0 2 1 0.75",
+        "sphere -7.0 0 -2 0.75",
+        "sphere -7.0 -2 -5 0.75"
+      ]
+    },
+    {
+      "color": [255, 50, 100],
+      "reflectance": 0.25,
+      "ambient_coefficient": 0.15,
+      "specular_coefficient": 0.4,
+      "specular_exponent": 10,
+      "contents": [
+        "sphere 7.0 2 -5 0.75",
+        "sphere 7.0 0 -2 0.75",
+        "sphere 7.0 -2 1 0.75",
+        "sphere 3.0 2 -5 0.75",
+        "sphere 3.0 0 -2 0.75",
+        "sphere 3.0 -2 1 0.75",
+        "sphere -1.0 2 -5 0.75",
+        "sphere -1.0 0 -2 0.75",
+        "sphere -1.0 -2 1 0.75",
+        "sphere -5.0 2 -5 0.75",
+        "sphere -5.0 0 -2 0.75",
+        "sphere -5.0 -2 1 0.75",
+        "sphere -9.0 2 -5 0.75",
+        "sphere -9.0 0 -2 0.75",
+        "sphere -9.0 -2 1 0.75"
+      ]
+    }
+  ]
+}

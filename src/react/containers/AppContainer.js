@@ -11,15 +11,25 @@ function getStores() {
 
 function getState() {
   return {
-    configuration: ConfigurationStore.getState(),
-    lights: ConfigurationStore.getState().get("lights"),
-    objects: ConfigurationStore.getState().get("objects"),
-    selected_configuration: ConfigurationStore.getState().getIn(['react_state', 'selected_configuration']),
+    state: ConfigurationStore.getState().get("react_state"),
+    configuration: ConfigurationStore.getState().get("tracer_configuration"),
+    lights: ConfigurationStore.getState().getIn(["tracer_configuration", "lights"]),
+    objects: ConfigurationStore.getState().getIn(["tracer_configuration", "objects"]),
+    selected_tab: ConfigurationStore.getState().getIn(['react_state', 'selected_tab']),
 
-    selectConfiguration: ConfigurationActions.selectConfiguration,
+    selectTab: ConfigurationActions.selectTab,
+
+    loadScene: ConfigurationActions.requestScene,
+
+    showError: ConfigurationActions.showError,
+    showInfo: ConfigurationActions.showInfo,
 
     addLight: ConfigurationActions.addLight,
+    deleteLight: ConfigurationActions.deleteLight,
+
     addObject: ConfigurationActions.addObject,
+    deleteObject: ConfigurationActions.deleteObject,
+
     onUpdateValue: ConfigurationActions.updateValue,
     onUpdateCoordValue: ConfigurationActions.updateCoordValue
   };

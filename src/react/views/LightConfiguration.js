@@ -6,7 +6,6 @@ class LightConfiguration extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.addLight = this.addLight.bind(this);
   }
 
   handleChange(id, event) {
@@ -30,17 +29,14 @@ class LightConfiguration extends React.Component {
     );
   }
 
-  addLight(event) {
-    this.props.addLight();
-  }
-
   render() {
-    let selected = this.props.selected_configuration === 'light';
+    let selected = this.props.selected_tab === 'light';
     return (
         <div className={"configuration light-configurations " + (selected ? "selected" : "")}>
-          <div className="configuration_title">Light Configuration</div>
-          {[...this.props.lights.values()].reverse().map(light => (
+          <div className="configuration-title">Light Configuration</div>
+          {[...this.props.lights.values()].map(light => (
               <div className="light_configuration" key={light.id}>
+                <button onClick={(() => this.props.deleteLight(light.id))}>Delete Light</button>
                 <LabelledCoordInput
                     name="position"
                     value={light.position}
@@ -67,7 +63,7 @@ class LightConfiguration extends React.Component {
                 />
               </div>
           ))}
-          <button onClick={this.addLight}>Add Light</button>
+          <button onClick={this.props.addLight}>Add Light</button>
         </div>
     )
   }

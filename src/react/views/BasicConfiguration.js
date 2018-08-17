@@ -13,10 +13,10 @@ class BasicConfiguration extends React.Component {
   }
 
   render() {
-    let selected = this.props.selected_configuration === 'basic';
+    let selected = this.props.selected_tab === 'basic';
     return (
         <div className={"configuration basic-configurations " + (selected ? "selected" : "")} >
-          <div className="configuration_title">Basic Configuration</div>
+          <div className="configuration-title">Basic Configuration</div>
           <LabelledInput name="width" value={this.props.configuration.get("width")} type="integer" className="number" handleChange={this.handleChange} {...this.props} />
           <LabelledInput name="height" value={this.props.configuration.get("height")} type="integer" className="number" handleChange={this.handleChange} {...this.props} />
           <LabelledInput name="samples" value={this.props.configuration.get("samples")} type="integer" className="number" handleChange={this.handleChange} {...this.props} />

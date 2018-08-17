@@ -2,28 +2,33 @@ import Immutable from 'immutable';
 
 const Configuration = Immutable.Record(
   {
-    threads: 1,
-    samples: 1,
-    use_kd_tree: true,
-    max_kd_tree_depth: 20,
-    max_reflections: 5,
+    tracer_configuration: Immutable.Map({
 
-    width: 200,
-    height: 200,
-    viewport_distance: 1.0,
-    viewport_width: 1.0,
-    camera_position: [3.0, 0.0, 20.0],
-    camera_target: [0.0, -3.0, 0.0],
-    camera_up: [0.0, 1.0, 0.0],
+      threads: 1,
+      samples: 1,
+      use_kd_tree: true,
+      max_kd_tree_depth: 20,
+      max_reflections: 5,
 
-    lights: Immutable.OrderedMap(),
-    objects: Immutable.OrderedMap(),
+      width: 200,
+      height: 200,
+      viewport_distance: 1.0,
+      viewport_width: 1.0,
+      camera_position: [3.0, 0.0, 20.0],
+      camera_target: [0.0, -3.0, 0.0],
+      camera_up: [0.0, 1.0, 0.0],
 
-    reinhard_key_value: 1.5,
-    reinhard_delta: 0.01,
+      lights: Immutable.OrderedMap(),
+      objects: Immutable.OrderedMap(),
 
-    react_state: Immutable.OrderedMap({
-        selected_configuration: 'basic'
+      reinhard_key_value: 1.5,
+      reinhard_delta: 0.01,
+    }),
+
+    react_state: Immutable.Map({
+      selected_tab: 'load',
+      info: '',
+      error: ''
     })
   }
 );

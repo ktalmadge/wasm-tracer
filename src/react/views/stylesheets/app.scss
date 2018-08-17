@@ -1,47 +1,59 @@
 html {
-  font-family: sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  margin: 30px 0;
 }
 
 button {
-  background: #ddd;
-  border: 1px solid gray;
-  padding: 5px 10px;
+  border-radius: 3px;
+  background: #bdc7d0;
+  font-weight: 500;
+
+  color: #575757;
+  border: 0;
+  height: 30px;
+  margin: 0 2px;
 
   &.nav-button {
     border-bottom: 0;
     flex-grow: 1;
   }
 
-  &:hover {
-    background: #ccc;
+  &:hover,
+  &.selected:hover {
+    background: #0b64a8;
     cursor: pointer;
+    color: white;
   }
 
-  &:active {
-    background: #bbb;
+  &:active,
+  &.selected:active {
+    background: #073f69;
+    color: white;
   }
 
   &.selected {
-    background: white;
+    background: #09548d;
+    color: white;
   }
 
   &:focus {
-    //background: #eee!important;
+    background: #073f69;
+    color: white;
     outline: none;
-  }
-}
-
-textarea {
-  &.textarea {
-    height: 15rem;
-    width: 300px;
   }
 }
 
 .labelled-input {
   height: 2em;
   margin: 10px 0;
-
   &.textarea-labelled-input {
     height: auto;
   }
@@ -62,7 +74,7 @@ textarea {
   input {
     text-align: right;
     padding: 0 5px;
-    border: 1px solid lightgray;
+    border: 1px solid #a9a9a9;
     background: white;
     border-radius: 5px;
     height: 2em;
@@ -86,22 +98,29 @@ textarea {
       margin-right: 10px;
     }
   }
+
+  textarea {
+    &.textarea {
+      height: 15rem;
+      width: 300px;
+      border: 1px solid #a9a9a9;
+    }
+  }
 }
 
 .configuration {
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid gray;
+  //border: 1px solid gray;
 
   &:not(.selected) {
     display: none;
 
   }
 
-  .configuration_title {
+  .configuration-title {
     font-weight: bold;
-    font-variant: small-caps;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 }
 
@@ -109,19 +128,42 @@ canvas.ready {
   padding: 4px 4px 0;
 }
 
-#app {
+.configuration-container {
   display: flex;
   justify-content: center;
-  min-width: 550px;
-  max-width: 100%;
+  margin-bottom: 30px;
+
+  .configuration-form-and-nav {
+    min-width: 800px;
+
+    @media only screen and (max-width: 850px) {
+      min-width: auto;
+      width: 100%;
+    }
+  }
+
+  .configuration-form {
+    padding-top: 5px;
+  }
 }
 
-.app-container {
-  flex-grow: 1;
+.tracer-controls-wrapper {
+  width: 400px;
+  button {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
 }
 
-.tracer-container {
-  padding: 10px 0;
+.canvas-container,
+.tracer-controls-container,
+.tracer-controls-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.canvas-container {
+  margin-top: 10px;
 }
 
 .canvas-wrapper {
@@ -130,12 +172,9 @@ canvas.ready {
   height: auto;
 }
 
-.tracer-controls-container,
-.canvas-container {
-  display: flex;
-  justify-content: center;
+#canvas-target {
+  padding-top: 10px;
 }
-
 .progress {
   text-align: center;
 }
@@ -143,19 +182,71 @@ canvas.ready {
 .navigation-container {
   display: flex;
   justify-content: center;
+
+  .nav-button {
+    flex-basis: 0;
+  }
 }
 
-.configuration-error {
-  display: none;
-  width: auto;
-  padding: 10px 50px;
-  margin: 10px;
-  text-align: center;
-  background: #ff3333;
-  border: 1px solid #550000;
-  border-radius: 2px;
+.notification-container {
+  position: absolute;
+  width: 100%;
+  top: 1px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  height: 60px;
 
-  &:not(:empty) {
+  &:empty {
+    display: none;
+  }
+
+  .notification {
+    display: flex;
+    justify-content: center;
+
+    .info-notification,
+    .error-notification {
+      display: none;
+      width: auto;
+      height: 12px;
+      padding: 10px 50px;
+      margin: 10px;
+      text-align: center;
+
+      border-radius: 5px;
+
+      &:not(:empty) {
+        display: block;
+      }
+
+      &:hover {
+        opacity: 0.5;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .info-notification {
+    background: #43b16b;
+    border: 1px solid #1d681a;
+  }
+
+  .error-notification {
+    background: #ff3333;
+    border: 1px solid #550000;
+  }
+}
+
+.scene-configuration {
+  display: flex;
+  justify-content: center;
+}
+
+.available-scenes {
+  button {
     display: block;
+    margin-top: 10px;
+    width: 100%;
   }
 }

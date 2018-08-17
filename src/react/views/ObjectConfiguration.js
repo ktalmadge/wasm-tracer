@@ -6,7 +6,6 @@ class ObjectConfiguration extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.addObject = this.addObject.bind(this);
   }
 
   handleChange(id, event) {
@@ -30,17 +29,14 @@ class ObjectConfiguration extends React.Component {
     );
   }
 
-  addObject(event) {
-    this.props.addObject();
-  }
-
   render() {
-    let selected = this.props.selected_configuration === 'object';
+    let selected = this.props.selected_tab === 'object';
     return (
         <div className={"configuration object-configurations " + (selected ? "selected" : "")}>
-          <div className="configuration_title">Object Configuration</div>
-          {[...this.props.objects.values()].reverse().map(object => (
+          <div className="configuration-title">Object Configuration</div>
+          {[...this.props.objects.values()].map(object => (
               <div className="object_configuration" key={object.id}>
+                <button onClick={(() => this.props.deleteObject(object.id))}>Delete Object</button>
                 <LabelledCoordInput
                     name="color"
                     value={object.color}
@@ -91,7 +87,7 @@ class ObjectConfiguration extends React.Component {
                 />
               </div>
           ))}
-          <button onClick={this.addObject}>Add Object</button>
+          <button onClick={this.props.addObject}>Add Object</button>
         </div>
     )
   }

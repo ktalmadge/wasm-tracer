@@ -9,10 +9,11 @@ class RayTracerComponent {
     this.context = canvas.getContext('2d');
   }
 
-  updateConfiguration(configuration, onError) {
+  updateConfiguration(configuration, onSuccess, onError) {
     raytracer_wasm.then(raytracer => {
       try {
         this.raytracer = RayTracer.new(JSON.stringify(configuration));
+        onSuccess();
       } catch(error) {
         if(onError !== undefined){
           onError(error)
@@ -76,7 +77,7 @@ class RayTracerComponent {
           this.x, this.y, 1, 1
       );
 
-      if((this.y + 1) % this.canvas.height === 0) {
+      if(this.totalDrawn % 2000 === 0) {
         await new Promise(resolve => setTimeout(resolve, 1));
       }
     } while (this.next_pixel() && this.should_trace);
